@@ -1,0 +1,119 @@
+<div class="directory-searcher">
+  <form>
+    <div class="field">
+      <input type="text" name="datetimes" #date />
+    </div>
+    <div class="field">
+      <select class="form-control" tabindex="2" name="aa" [(ngModel)]="cap" data-placeholder="aaaaaa">
+        <option [ngValue]="undefined" hidden selected><span>Choisir la capacité</span></option>
+        <option [ngValue]="0"><span>Choisir la capacité</span> </option>
+
+        <option [ngValue]="5">5</option>
+        <option [ngValue]="10">10</option>
+        <option [ngValue]="15">15</option>
+        <option [ngValue]="20">20</option>
+        <option [ngValue]="25">25</option>
+        <option [ngValue]="30">30</option>
+
+
+
+      </select>
+    </div>
+    <div class="field">
+  
+      
+        <select data-placeholder="Equipements" class="form-control" tabindex="2" name="equi" [(ngModel)]="equi">
+          <option [ngValue]="undefined" hidden selected>Choisir les Equipements</option>
+          <option [ngValue]="null">Choisir les Equipements</option>
+          <option *ngFor="let item of equipements" [ngValue]="item.name">{{item.name}}</option>
+        </select>
+
+    </div>
+    <div class="field">
+      <button type="submit" (click)="RechercheSalles(date.value)"><i class="la la-search"></i>SEARCH</button>
+    </div>
+  </form>
+
+</div>
+<div class="table-wrapper-scroll-y" *ngIf="ok">
+  <span>Nobmber de Salle diponible : <b>{{ salles?.length || '0' }}</b>
+
+  </span>
+  <div class="omar">
+
+      <div class="row">
+          <div class="col-sm-4 " style="margin-top: 10px;" *ngFor="let item of salles | filterCapacity : cap ">
+      <div class="flip-card"  >
+          <div class="flip-card-inner">
+            
+            <div class="flip-card-front">
+              <div class="Results">
+              <img src="../../../assets/Template/images/room.jpg" alt="Avatar" style="width:300px;height:200px;">
+            </div>
+
+              <div class="centered"><h2 style="color:white">{{item.name}}</h2></div>
+            </div>
+            <div class="flip-card-back">
+              <h2>{{item.name}}</h2> 
+              <p>Capaciter: <b style="color: aliceblue">{{item.capacity}}</b></p> 
+              <p>Equipements:
+              <span *ngIf="item?.equipements?.length>0">
+                  
+                <span *ngFor="let e of item.equipements">
+                
+                                   <b style="color: aliceblue"> {{e.name}}</b>  
+                 
+                </span>
+              </span>
+
+              <span *ngIf="!item?.equipements?.length>0">
+                  <b style="color: aliceblue">pas d'equipements!</b>  
+
+                
+              </span>
+            </p>
+
+              <button type="button" (click)="DoReservation(date.value, item.name)"  class="btn btn-dark" data-toggle="modal" data-target="#myModal">
+                  Réserver
+                </button> 
+            </div>
+          </div>
+        </div>
+        </div>
+                <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirmation de votre Reservation </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+              <span> Nom De la Salle : </span>{{Reservation.NomSalle}}
+               <hr>
+               Date Debut : {{Reservation.dateDebut}}
+               <hr>
+               Date Fin : {{Reservation.dateFin}}
+               
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
+                <button (click)="ConfirmeReservation()" data-dismiss="modal" type="button" class="btn btn-primary">Confirmation!</button>
+              </div>
+            </div>
+          </div>
+        
+        </div>
+      
+      </div>
+
+   
+
+
+
+
+  </div>
+</div>
